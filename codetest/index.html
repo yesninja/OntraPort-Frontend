@@ -1,0 +1,128 @@
+<!DOCTYPE HTML >
+<html>
+<head>
+	<title>The network</title>
+	
+	<link rel="stylesheet" type="text/css" href="normalize.css" />
+	<link rel="stylesheet" type="text/css" href="styles.css" />
+	
+	<!-- grab jQuery from google -->
+	<script type="text/javascript" src="js/jquery-min.js"></script>
+	<!-- load up box.js for local storage support -->
+	<script type="text/javascript" src="resources/box.js/box.js"></script>
+	<!-- load the class prototype to be used for our posts class... -->
+	<script type="text/javascript" src="js/class.js"> </script>
+	<!-- load up our users.js script to handle the loading of Json user data : assumption user id = 5 -->
+	<script type="text/javascript" src="js/users.js" ></script>
+	<!-- load up our posts.js script to handle the loading/creation of Json posts -->
+	<script type="text/javascript" src="js/posts.js" ></script>
+	<!-- load up our popup.js script to handle pop ups -->
+	<script type="text/javascript" src="js/popup.js" ></script>
+
+	
+	<script>
+		jQuery(document).ready(function($) {
+		
+			var posts = new Posts();
+			
+			//set up click handlers
+			//post click handler
+			$(document).on('keydown' , '#post-textarea' , function(e) {
+				
+				// Check the keyCode and if the user pressed Enter (code = 13) 
+				if (e.keyCode == 13) {
+					
+					var content = $(this).val();
+					posts.create( content , posts.users.activeUser);
+					//close pop up box...
+					closePopUp();
+					//clear input
+					$(this).val('');
+					e.preventDefault;
+					return false;
+				}
+
+			});
+			
+			//comment click handler
+			$(document).on('keydown' , '.comment-textarea' , function(e) {
+				
+				// Check the keyCode and if the user pressed Enter (code = 13) 
+				if (e.keyCode == 13) {					
+					var content = $(this).val();
+
+					var postID = $(this).attr('id').split('-')[2];
+					posts.createComment( content , postID );
+					$(this).val('');
+					e.preventDefault;
+					
+					return false;
+				}
+
+			});
+			
+		});
+	</script>
+
+</head>
+<body>
+	
+	<div id="header">
+		<div id="logo">
+			<img src="images/logo.png" alt="the network"/>
+		</div>	
+		<div id="search">
+			<form method="get" action="#">
+				<input type="search" name="terms" placeholder="Search...."/>
+				<input type="submit" value="Go"/>
+			</form>
+		</div>
+		<div id="account">
+			<ul>
+				<li> <a href="index.html" > Home</a> </li>
+				<li> <a href="#" data-reveal-id="popUp" > Post an update </a> </li>
+				<li> <img src="" alt="" class="user-about profile-pic img-thumb" /> </li> 
+		</div>
+	</div>
+	
+	<div class="clear"></div>
+	
+	<div id="container">		
+		<div id="page" class="content">
+			<div id="page-container">
+				<h2> Updates</h2>
+				<!-- here is where the posts will append too -->
+				
+				
+			</div>
+		</div>
+		
+		<div id="secondary" class="content">
+			<img src="" alt="" class="profile-pic user-about img-medium" /> 
+			<span class="user-name"> </span> 
+		</div>	
+		
+		<div class="clear"></div>
+		<div id="footer">
+			<p>This is a footer mesage</p>
+		</div>	
+			
+	</div>
+
+	<div id="popUp" class="popup reveal-modal">
+		<div class="popup-container">
+			<h2>Status Update</h2>
+			<form id="post-form">
+				<textarea id="post-textarea" name="post-textarea" placeholder="whats on your mind"></textarea>
+			</form>
+			<p>hit enter to post</p>
+		</div>
+		<a class="close-reveal-modal">X</a>
+	</div>
+	
+	<div id="fade-container"> 
+		
+	</div>
+		
+</body>
+</html>
